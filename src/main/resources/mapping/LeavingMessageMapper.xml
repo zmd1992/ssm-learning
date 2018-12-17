@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ihappy.java.ssmlearning.dao.ILeavingMessageDao">
+    <resultMap id="BaseResultMap" type="com.ihappy.java.ssmlearning.model.LeavingMessage">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="leaving_time" property="leavingTime" jdbcType="DATE"/>
+        <result column="leaving_man" property="leavingMan" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" javaType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id,title,content,leaving_time,leaving_man,is_deleted
+    </sql>
+    <select id="selectLeavingMessage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leaving_message order by leaving_time desc
+        limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+    </select>
+    <insert id="insertLeavingMessage" parameterType="com.ihappy.java.ssmlearning.model.LeavingMessage">
+        insert into leaving_message (title,content,leaving_time,leaving_man)values (#{title},#{content},#{leavingTime},#{leavingMan})
+    </insert>
+    <update id="deleteLeavingMessage" parameterType="java.lang.Integer">
+        update leaving_message set is_deleted = 1 where id = #{id}
+    </update>
+    <update id="updateLeavingMessage" parameterType="com.ihappy.java.ssmlearning.model.LeavingMessage">
+        update leaving_message set title=#{title},content=#{content},leaving_time=#{leavingTime},leaving_man=#{leavingMan}
+        where  id=#{id}
+    </update>
+    <select id="queryOneLeavingMessage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leaving_message where id=#{id}
+    </select>
+    <select id="selectLeavingMessageCount" parameterType="com.ihappy.java.ssmlearning.model.LeavingMessage"
+            resultType="java.lang.Integer">
+        select count(*) from leaving_message
+    </select>
+    <select id="selectLeavingMessageList" parameterType="com.ihappy.java.ssmlearning.model.LeavingMessage"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leaving_message
+    </select>
+    <update id="bacthRemoveLeavingMessage" parameterType="java.util.List">
+        update leaving_message set is_deleted = 1 where
+        <if test="list != null">
+            id in
+            <foreach collection="list" close=")" open="(" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+</mapper>

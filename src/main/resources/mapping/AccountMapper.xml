@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ihappy.java.ssmlearning.dao.IAccountDao">
+    <resultMap id="BaseResultMap" type="com.ihappy.java.ssmlearning.model.Account">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+        <result column="translate" property="translate" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+     user_name,password,sex,birthday,translate,email,create_time
+    </sql>
+    <sql id="Base_Column_List2">
+     id,user_name,password,sex,birthday,translate,email,create_time
+    </sql>
+    <sql id="Account_Column_List">
+        user_name,password
+    </sql>
+    <insert id="insertOneAccountByCondition" parameterType="com.ihappy.java.ssmlearning.model.Account">
+        insert into account
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="translate != null">
+                translate,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="createTime != null">
+                create_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=VARCHAR},
+            </if>
+            <if test="translate != null">
+                #{translate,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=DATE}
+            </if>
+        </trim>
+    </insert>
+    <select id="selectAccountByUserName" parameterType="com.ihappy.java.ssmlearning.model.Account"
+            resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>  from account where user_name=#{userName}
+    </select>
+    <select id="selectAccountByUser" parameterType="com.ihappy.java.ssmlearning.model.Account" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List2"/> from account
+        where user_name = #{userName}
+    </select>
+    <select id="selectAccountInfoById" parameterType="com.ihappy.java.ssmlearning.model.Account" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from accoount where id = #{id}
+    </select>
+
+
+</mapper>
